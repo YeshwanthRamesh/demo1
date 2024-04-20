@@ -57,7 +57,4 @@ resource "azurerm_linux_virtual_machine" "TerraformMachine" {
     version   = "latest"
   }
 }
-output publicIP {
-			value = azurerm_virtual_network.YeshwanthVirtualNetwork.public_ip_address
-		}
 
