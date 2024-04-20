@@ -28,8 +28,13 @@ resource "azurerm_network_interface" "YeshwanthNetworkInterface" {
     subnet_id                     = azurerm_subnet.YeshwanthSubNet.id
     private_ip_address_allocation = "Dynamic"
   }
+}
 
-
+resource "azurerm_public_ip" "TerraformMachinePublicIP" {
+  name                = "TerraformMachinePublicIP"
+  location            = azurerm_resource_group.EastUSAYeshwanth.location
+  resource_group_name = azurerm_resource_group.EastUSAYeshwanth.name
+  allocation_method   = "Static"
 }
 
 resource "azurerm_linux_virtual_machine" "TerraformMachine" {
@@ -46,7 +51,7 @@ resource "azurerm_linux_virtual_machine" "TerraformMachine" {
   }
 
   network_interface_ids = [azurerm_network_interface.YeshwanthNetworkInterface.id]
-
+  
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Premium_LRS"
@@ -60,3 +65,7 @@ resource "azurerm_linux_virtual_machine" "TerraformMachine" {
   }
 }
 
+resource "azurerm_network_interface_public_ip_association" "TerraformMachinePublicIPAssoc" {
+  network_interface_id = azurerm_network_interface.YeshwanthNetworkInterface.id
+  public_ip_address_id = azurerm_public_ip.TerraformMachinePublicIP.id
+}
