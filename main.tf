@@ -39,9 +39,11 @@ resource "azurerm_linux_virtual_machine" "TerraformMachine" {
   size                = "Standard_DS1_v2"
 
   admin_username = "TerraformMachine"
-  admin_password = "Abbuyesh1"
-
   disable_password_authentication = false
+  admin_ssh_key {
+    username   = "TerraformMachine"
+    public_key = file(".")  
+  }
 
   network_interface_ids = [azurerm_network_interface.YeshwanthNetworkInterface.id]
 
